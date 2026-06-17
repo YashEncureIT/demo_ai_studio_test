@@ -1,0 +1,35 @@
+services:
+  # ==========================================
+  # Development Environment (Hot-Reload Enabled)
+  # ==========================================
+  dev:
+    build:
+      context: .
+      target: development
+    container_name: aams-dev-container
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - APP_URL=${APP_URL}
+    volumes:
+      - .:/app
+      - /app/node_modules # Protect container-installed modules from local machine override
+    stdin_open: true
+    tty: true
+
+  # ==========================================
+  # Production Compiled Sandbox
+  # ==========================================
+  prod:
+    build:
+      context: .
+      target: production
+    container_name: aams-prod-container
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - APP_URL=${APP_URL}

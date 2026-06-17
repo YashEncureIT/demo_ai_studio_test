@@ -19,7 +19,8 @@ import {
   AlertTriangle,
   Receipt,
   FileCheck2,
-  FolderTree
+  FolderTree,
+  CheckSquare
 } from "lucide-react";
 
 import {
@@ -50,6 +51,7 @@ import AuditorView from "./components/AuditorView";
 import FinanceView from "./components/FinanceView";
 import AssetManagerView from "./components/AssetManagerView";
 import AdminView from "./components/AdminView";
+import GoogleTasksView from "./components/GoogleTasksView";
 
 export default function App() {
   // Session State
@@ -363,25 +365,29 @@ export default function App() {
         { name: "Audit Management", icon: ClipboardList },
         { name: "Compliance", icon: Shield },
         { name: "Observations", icon: AlertTriangle },
-        { name: "Approval Queue", icon: FolderTree }
+        { name: "Approval Queue", icon: FolderTree },
+        { name: "Google Tasks", icon: CheckSquare }
       ];
     } else if (session.role === "Finance") {
       return [
         { name: "Approval Queue", icon: FileCheck2 },
         { name: "Asset Valuation", icon: Receipt },
-        { name: "Depreciation Tool", icon: Sliders }
+        { name: "Depreciation Tool", icon: Sliders },
+        { name: "Google Tasks", icon: CheckSquare }
       ];
     } else if (session.role === "AssetManager") {
       return [
         { name: "Asset Register", icon: Layers },
-        { name: "Approval Tracker", icon: FileCheck2 }
+        { name: "Approval Tracker", icon: FileCheck2 },
+        { name: "Google Tasks", icon: CheckSquare }
       ];
     } else {
       // Administrator
       return [
         { name: "Approval Queue", icon: FileCheck2 },
         { name: "Master Registries", icon: Database },
-        { name: "System Logs & Telemetry", icon: Activity }
+        { name: "System Logs & Telemetry", icon: Activity },
+        { name: "Google Tasks", icon: CheckSquare }
       ];
     }
   };
@@ -548,53 +554,64 @@ export default function App() {
 
         {/* Dynamic Center Workstation View Router */}
         <main id="primary_view_pane" className="flex-1 flex flex-col overflow-hidden bg-slate-50">
-          {/* AUDITOR ACTIVE VIEWS */}
-          {session.role === "Auditor" && (
-            <AuditorView
+          {activeMenuKey === "Google Tasks" ? (
+            <GoogleTasksView
               assets={assets}
               campaigns={campaigns}
               observations={observations}
-              logs={logs}
-              onAddCampaign={handleAddCampaign}
-              onVerifyAsset={handleVerifyAsset}
-              onRemediateObservation={handleRemediateObservation}
-              onExportData={handleExportDataToCSV}
-            />
-          )}
-
-          {/* FINANCE ACTIVE VIEWS */}
-          {session.role === "Finance" && (
-            <FinanceView
-              assets={assets}
               approvals={approvals}
-              onApproveFinance={handleApprovePipelineItem}
-              onModifyDepreciation={handleModifyDepreciationSchedule}
-              onExportData={handleExportDataToCSV}
             />
-          )}
+          ) : (
+            <>
+              {/* AUDITOR ACTIVE VIEWS */}
+              {session.role === "Auditor" && (
+                <AuditorView
+                  assets={assets}
+                  campaigns={campaigns}
+                  observations={observations}
+                  logs={logs}
+                  onAddCampaign={handleAddCampaign}
+                  onVerifyAsset={handleVerifyAsset}
+                  onRemediateObservation={handleRemediateObservation}
+                  onExportData={handleExportDataToCSV}
+                />
+              )}
 
-          {/* ASSET MANAGER ACTIVE VIEWS */}
-          {session.role === "AssetManager" && (
-            <AssetManagerView
-              assets={assets}
-              onAddAsset={handleAddAsset}
-              onInitiateTransfer={handleInitiateTransfer}
-              onInitiateDisposal={handleInitiateDisposal}
-              onExportData={handleExportDataToCSV}
-            />
-          )}
+              {/* FINANCE ACTIVE VIEWS */}
+              {session.role === "Finance" && (
+                <FinanceView
+                  assets={assets}
+                  approvals={approvals}
+                  onApproveFinance={handleApprovePipelineItem}
+                  onModifyDepreciation={handleModifyDepreciationSchedule}
+                  onExportData={handleExportDataToCSV}
+                />
+              )}
 
-          {/* ADMINISTRATOR ACTIVE VIEWS */}
-          {session.role === "Admin" && (
-            <AdminView
-              assets={assets}
-              approvals={approvals}
-              logs={logs}
-              locations={locations}
-              vendors={vendors}
-              onApproveAdmin={handleApprovePipelineItem}
-              onToggleLocationStatus={handleToggleLocationStatus}
-            />
+              {/* ASSET MANAGER ACTIVE VIEWS */}
+              {session.role === "AssetManager" && (
+                <AssetManagerView
+                  assets={assets}
+                  onAddAsset={handleAddAsset}
+                  onInitiateTransfer={handleInitiateTransfer}
+                  onInitiateDisposal={handleInitiateDisposal}
+                  onExportData={handleExportDataToCSV}
+                />
+              )}
+
+              {/* ADMINISTRATOR ACTIVE VIEWS */}
+              {session.role === "Admin" && (
+                <AdminView
+                  assets={assets}
+                  approvals={approvals}
+                  logs={logs}
+                  locations={locations}
+                  vendors={vendors}
+                  onApproveAdmin={handleApprovePipelineItem}
+                  onToggleLocationStatus={handleToggleLocationStatus}
+                />
+              )}
+            </>
           )}
         </main>
       </div>
