@@ -1,0 +1,8 @@
+{
+  "name": "AAMS Enterprise Governance & Asset Intelligence",
+  "description": "Enterprise-grade asset tracking, fiscal depreciation, real-time audit control, and master data governance workspaces featuring roles for Administrators, Finance Officers, Auditors, and Asset Managers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
